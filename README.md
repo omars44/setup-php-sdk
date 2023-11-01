@@ -7,17 +7,39 @@ for building and testing PHP extensions on Windows.
 
 ````.yml
 - id: setup-php-sdk
-  uses: cmb69/setup-php-sdk@v0.5
+  uses: derickr/setup-php-sdk@master
   with:
     version: 8.0
     arch: x64
     ts: nts
+    
 - uses: ilammy/msvc-dev-cmd@v1
   with:
     arch: x64
     toolset: ${{steps.setup-php-sdk.outputs.toolset}}
 - run: phpize
 - run: configure --enable-dbase --with-prefix=${{steps.setup-php-sdk.outputs.prefix}}
+- run: nmake
+- run: nmake test TESTS=tests
+````
+
+## Example with dependencies
+
+````.yml
+- id: setup-php-sdk
+  uses: derickr/setup-php-sdk@master
+  with:
+    version: 8.0
+    arch: x64
+    ts: nts
+    deps: 'libxml2,libcurl'
+    
+- uses: ilammy/msvc-dev-cmd@v1
+  with:
+    arch: x64
+    toolset: ${{steps.setup-php-sdk.outputs.toolset}}
+- run: phpize
+- run: configure --enable-solr --with-php-build=.\..\deps --with-prefix=${{steps.setup-php-sdk.outputs.prefix}}
 - run: nmake
 - run: nmake test TESTS=tests
 ````
