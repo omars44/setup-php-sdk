@@ -28,6 +28,7 @@ $toolsets = @{
 }
 $dir = vswhere -latest -find "VC\Tools\MSVC"
 foreach ($toolset in (Get-ChildItem $dir)) {
+    Write-Output "Found toolset: $toolset"
     $tsv = "$toolset".split(".")
     if ((14 -eq $tsv[0]) -and (16 -eq $tsv[1])) {
         $toolsets."vc14" = $toolset
