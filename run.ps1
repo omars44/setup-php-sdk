@@ -29,7 +29,7 @@ $toolsets = @{
 $dir = vswhere -latest -find "VC\Tools\MSVC"
 foreach ($toolset in (Get-ChildItem $dir)) {
     $tsv = "$toolset".split(".")
-    if ((14 -eq $tsv[0]) -and (9 -ge $tsv[1])) {
+    if ((14 -eq $tsv[0]) -and (16 -eq $tsv[1])) {
         $toolsets."vc14" = $toolset
     } elseif ((14 -eq $tsv[0]) -and (19 -ge $tsv[1])) {
         $toolsets."vc15" = $toolset
@@ -39,6 +39,7 @@ foreach ($toolset in (Get-ChildItem $dir)) {
         $toolsets."vs17" = $toolset
     }
 }
+
 $toolset = $toolsets.$vs
 if (-not $toolset) {
     throw "toolset not available"
